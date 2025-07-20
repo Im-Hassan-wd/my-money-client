@@ -29,6 +29,8 @@ export default function TransactionForm() {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${user.token}`,
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true,
       },
     });
     const json = await response.json();
