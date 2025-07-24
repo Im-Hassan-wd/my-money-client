@@ -36,6 +36,16 @@ export default function Home() {
     <div className={styles.container}>
       <div className={styles.content}>
         {transactions && <TransactionList transactions={transactions} />}
+        <div className={styles.amount} style={{ textAlign: "right" }}>
+          Total -
+          <span style={{ color: "#1f9751" }}>
+            $
+            {transactions?.reduce(
+              (sum, transaction) => sum + transaction.amount,
+              0
+            )}
+          </span>
+        </div>
       </div>
       <div className={styles.sidebar}>
         <TransactionForm />

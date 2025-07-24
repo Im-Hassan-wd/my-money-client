@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 
 export const useSignup = () => {
@@ -6,19 +6,25 @@ export const useSignup = () => {
   const [error, setError] = useState(null);
   const [isPending, setIspending] = useState(null);
 
+  const controller = new AbortController();
+
   const signup = async (email, password, displayName) => {
     setIspending(true);
     setError(null);
 
-    const response = await fetch("/api/user/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Credentials": true,
+    const response = await fetch(
+      "/api/user/signup",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": true,
+        },
+        body: JSON.stringify({ email, password, displayName }),
       },
-      body: JSON.stringify({ email, password, displayName }),
-    });
+      { signal: controller.signal }
+    );
     const json = await response.json();
 
     if (!response.ok) {
@@ -34,6 +40,10 @@ export const useSignup = () => {
 
       setIspending(false);
     }
+
+    return () => {
+      controller.abort();
+    };
   };
 
   return { signup, isPending, error };
