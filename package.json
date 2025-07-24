@@ -1,4 +1,5 @@
 {
+  "proxy": "https://my-money-server-d0p4.onrender.com/",
   "name": "my-money",
   "version": "0.1.0",
   "private": true,
